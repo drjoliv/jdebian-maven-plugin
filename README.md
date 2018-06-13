@@ -8,6 +8,10 @@ Sadly javadebian currently has a dependeny on dpkg, so dpkg must be installed. H
 The only phase in which javadebian needs to bind to is the package phase.
 
 Below is an example of adding javadebian to your pom.xml
+
+[![asciicast](https://asciinema.org/a/YAN3lqlz74V0VL8H8HyJb4MY8)](https://asciinema.org/a/YAN3lqlz74V0VL8H8HyJb4MY8)
+
+
 ```xml
 ...
   <build>
