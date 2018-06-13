@@ -7,13 +7,10 @@
 
   <groupId>drjoliv.plugin</groupId>
   <artifactId>debian-maven-plugin</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.0.1-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <name>javadebian Maven Plugin</name>
-
-  <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
 
   <prerequisites>
     <maven>${maven.version}</maven>
