@@ -1,4 +1,7 @@
 # javadebian
+[![](https://jitpack.io/v/drjoliv/javadebian.svg)](https://jitpack.io/#drjoliv/javadebian)
+
+<hr/>
 A Maven Plugin for creating .deb files from Java applications.
 
 javadebian creates an executable Jar file from your Java code and wraps it up in a .deb file. Additionally all of the RUNTIME dependencies located within your pom.xml are added to the classpath of the the exectuable Jar and are also wrapped up nice and tight within the .deb file.
@@ -13,16 +16,23 @@ Below is an example of adding javadebian to your pom.xml
 
 
 ```xml
+
+<repositories>
+  <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+  </repository>
+</repositories>
+
 ...
   <build>
     <plugins>
       <plugin>
-        <groupId>drjoliv.plugin</groupId>
-        <artifactId>debian-maven-plugin</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <groupId>com.github.drjoliv</groupId>
+        <artifactId>javadebian</artifactId>
+        <version>0.1</version>
         <executions>
           <execution>
-            <id>simple test</id>
             <goals>
               <goal>build</goal>
             </goals>
