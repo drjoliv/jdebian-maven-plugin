@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Resource;
@@ -13,7 +12,7 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
-import drjoliv.fjava.adt.FList;
+import drjoliv.jfunc.data.list.FList;
 
 abstract class AbstractDebianMojo extends AbstractMojo {
   /**
@@ -128,7 +127,7 @@ abstract class AbstractDebianMojo extends AbstractMojo {
   /**
   * @return the buildDirectory
   */
-  public File buildDirectory() {
+  public File targetDir() {
     return buildDirectory;
   }
 
@@ -228,23 +227,27 @@ abstract class AbstractDebianMojo extends AbstractMojo {
   }
 
   public FList<Artifact> getArtifacts() {
-    return FList.fromCollection(project.getArtifacts());
+    return FList.collection(project.getArtifacts());
   }
 
   public Artifact getArtifact() {
     return project.getArtifact();
   }
 
+  protected void setArtifactFile(File file) {
+    project.getArtifact().setFile(file);
+  }
 
-  public File getTempFolder() {
-    File f = new File(buildDirectory(),"/temp");
+
+  public File tempDir() {
+    File f = new File(targetDir(),"/temp");
     if(!f.isDirectory())
       f.mkdirs();
     return f;
   }
 
   public File getUsrFolder() {
-    File f = new File(getTempFolder(),"/debian/usr");
+    File f = new File(tempDir(),"/debian/usr");
     if(!f.isDirectory()) {
       f.mkdirs();
       try {
@@ -300,8 +303,12 @@ abstract class AbstractDebianMojo extends AbstractMojo {
     return buildOutputDir;
   }
 
+  public String artifactName() {
+    return packageName() + "-" + version() + ".deb";
+  }
+
   public File getDebianFolder() {
-    File f = new File(getTempFolder(), "/debian");
+    File f = new File(tempDir(), "/debian");
     if(!f.isDirectory())
       f.mkdirs();
     return f;
@@ -314,11 +321,15 @@ abstract class AbstractDebianMojo extends AbstractMojo {
     return f;
   }
 
-  public File getControlFile() {
+  public File artifactFile() {
+    return new File(targetDir(), artifactName());
+  }
+
+  public File ctrlFile() {
     return new File(getDEBIANFolder(), "control");
   }
 
-  public File getExecutable() {
+  public File execFile() {
     return new File(getBinFolder(), packageName());
   }
 }
