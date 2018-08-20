@@ -1,7 +1,8 @@
-# javadebian
-[![](https://jitpack.io/v/drjoliv/javadebian.svg)](https://jitpack.io/#drjoliv/javadebian)
+# jDebian
+[![](https://jitpack.io/v/drjoliv/jdebian-maven-plugin.svg)](https://jitpack.io/#drjoliv/jdebian-maven-plugin)
 
 <hr/>
+
 A Maven Plugin for creating .deb files from Java applications.
 
 jDebian creates an executable Jar file from your Java code and wraps it up in a .deb file. Additionally all of the RUNTIME dependencies located within your pom.xml are added to the classpath of the the exectuable Jar and are also wrapped up nice and tight within the .deb file.
