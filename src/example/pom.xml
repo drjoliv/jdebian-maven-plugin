@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.github.drjoliv</groupId>
+  <artifactId>jdebian-example</artifactId>
+  <version>1.0</version>
+  <packaging>deb</packaging>
+
+  <name>jdebian-example</name>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+
+  <build>
+      <plugins>
+        <plugin>
+          <groupId>com.github.drjoliv</groupId>
+          <artifactId>jdebian-maven-plugin</artifactId>
+          <version>0.1-SNAPSHOT</version>
+          <configuration>
+            <!-- required configuration parameters-->
+            <longDecription>A long description of the jDebian plugin example.</longDecription>   <!-- Detailed description of the application. -->
+            <shortDecription>A short description of the jDebian plugin example.</shortDecription> <!-- Short descriptin of application no more that 60 characters. -->
+            <maintainerEmail>drjoliv@gmail.com</maintainerEmail> <!-- Email of the application maintainer. -->
+            <maintainerName>Desonte Jolivet</maintainerName>   <!-- Name of the application maintainer.-->
+            <mainClass>com.github.drjoliv.App</mainClass>
+          </configuration>
+          <extensions>true</extensions>
+        </plugin>
+      </plugins>
+  </build>
+</project>
