@@ -50,7 +50,6 @@ public class Package extends AbstractDebianMojo {
     }
 
     private Try<Unit> copyDebian() {
-      info("copying debian");
         return Try.with(() -> {
         if (getSrcDebianFolder().isDirectory())
           FileUtils.copyDirectory(getSrcDebianFolder(), tempDir());
@@ -63,7 +62,6 @@ public class Package extends AbstractDebianMojo {
 
     private Try<Unit> createJar() {
         return Try.with(() -> {
-          info("create jar");
           JarArchiver jar = new JarArchiver(); 
           jar.addDirectory(getClassFolder());
           Manifest man = new Manifest();
