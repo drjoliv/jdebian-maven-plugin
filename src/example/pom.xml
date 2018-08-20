@@ -29,7 +29,7 @@
             <!-- Detailed description of the application. -->
             <longDecription>A long description of the jDebian plugin example.</longDecription>  
 
-            <!-- Short descriptin of application no more that 60 characters. -->
+            <!-- Short description of application no more that 60 characters. -->
             <shortDecription>A short description of the jDebian plugin example.</shortDecription> 
 
             <!-- Email of the application maintainer. -->
