@@ -5,9 +5,9 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>drjoliv.plugin</groupId>
-  <artifactId>debian-maven-plugin</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <groupId>com.github.drjoliv</groupId>
+  <artifactId>jdebian-maven-plugin</artifactId>
+  <version>0.1-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <name>javadebian Maven Plugin</name>
@@ -23,68 +23,158 @@
     <maven.version>3.3.9</maven.version>
   </properties>
 
+  <repositories>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
+  </repositories>
+
+  <dependencyManagement>
+    <dependencies>
+
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-artifact</artifactId>
+      <version>3.3.9</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-component-annotations</artifactId>
+      <version>1.6</version>
+    </dependency>
+
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>18.0</version>
+        <scope>provided</scope>
+      </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>3.1.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-archiver</artifactId>
+      <version>3.6.0</version>
+    </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
-      <version>${maven.version}</version>
+      <version>3.3.9</version>
       <scope>provided</scope>
     </dependency>
+
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-core</artifactId>
-      <version>${maven.version}</version>
+      <version>3.3.9</version>
       <scope>provided</scope>
     </dependency>
+
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-artifact</artifactId>
-      <version>${maven.version}</version>
+      <version>3.3.9</version>
       <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>org.apache.maven</groupId>
-      <artifactId>maven-compat</artifactId>
-      <version>${maven.version}</version>
-      <scope>test</scope>
-    </dependency> 
+
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <artifactId>maven-plugin-annotations</artifactId>
       <version>3.5.1</version>
       <scope>provided</scope>
     </dependency>
+
     <dependency>
-          <groupId>org.codehaus.plexus</groupId>
-              <artifactId>plexus-archiver</artifactId>
-                  <version>3.6.0</version>
-                </dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-model</artifactId>
+      <version>3.3.9</version>
+      <scope>provided</scope>
+    </dependency>
+
+
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-archiver</artifactId>
+      <version>3.6.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+    </dependency>
+
+    <!-- Test JARS -->
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-compat</artifactId>
+      <version>3.3.9</version>
+      <scope>test</scope>
+    </dependency> 
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.12</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.apache.maven.plugin-testing</groupId>
       <artifactId>maven-plugin-testing-harness</artifactId>
       <version>3.3.0</version>
       <scope>test</scope>
-    </dependency>
+     </dependency>
+
     <dependency>
-      <groupId>drjoliv.fjava</groupId>
-      <artifactId>functional-java</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <groupId>com.github.drjoliv</groupId>
+      <artifactId>jfunc</artifactId>
+      <version>0.2-SNAPSHOT</version>
     </dependency>
-    <dependency>
-          <groupId>org.apache.maven</groupId>
-              <artifactId>maven-archiver</artifactId>
-                  <version>3.2.0</version>
-                </dependency>
+
+    <!--<dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-archiver</artifactId>
+      <version>3.2.0</version>
+      </dependency>-->
+
   </dependencies>
 
   <build>
       <plugins>
+
+        <!--<plugin>
+           <groupId>org.apache.maven.plugins</groupId>
+           <artifactId>maven-enforcer-plugin</artifactId>
+           <version>1.0.1</version>
+           <executions>
+               <execution>
+                   <id>enforce</id>
+                   <configuration>
+                       <rules>
+                           <DependencyConvergence/>
+                       </rules>
+                   </configuration>
+                   <goals>
+                       <goal>enforce</goal>
+                   </goals>
+                   <phase>validate</phase>
+               </execution>
+           </executions>
+         </plugin>-->
+
        <plugin>
           <artifactId>maven-invoker-plugin</artifactId>
           <version>3.0.1</version>

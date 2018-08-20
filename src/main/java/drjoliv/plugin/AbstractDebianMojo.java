@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Resource;
@@ -13,9 +12,9 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
-import drjoliv.fjava.adt.FList;
+import drjoliv.jfunc.data.list.FList;
 
-public abstract class AbstractDebianMojo extends AbstractMojo{
+abstract class AbstractDebianMojo extends AbstractMojo {
   /**
    *The name of the binary package.
    * Package names must consist only of lower case letters (a-z), digits (0-9), plus (+) and minus (-) signs, and periods (.).
@@ -28,6 +27,8 @@ public abstract class AbstractDebianMojo extends AbstractMojo{
 
     @Parameter(defaultValue="${project.build.directory}", required = true, readonly = true)
     private File buildDirectory;
+
+    private final File dpkg = new File("/usr/bin/dpkg");
 
     @Parameter(defaultValue="${project.basedir}", required = true, readonly = true)
     private File baseDir;
@@ -59,8 +60,6 @@ public abstract class AbstractDebianMojo extends AbstractMojo{
     @Parameter( property = "mainClass", required = true )
     private String mainClass;
 
-    public enum Priority {REQUIRED, IMPORTANT, STANDARD, OPTIONAL, EXTRA}
-
   /**
    * A unique single word identifying a Debian machine architecture
    * @see <a href="http://www.sosst.sk/doc/debian-policy/policy.html/ch-controlfields.html#s-f-Architecture">Architecture</a> 
@@ -70,8 +69,6 @@ public abstract class AbstractDebianMojo extends AbstractMojo{
 
     @Parameter( defaultValue = "${project}")
     private MavenProject project;
-
-    public enum Architecture {all, any, source}
 
   /**
    * The package maintainer's name.
@@ -104,53 +101,68 @@ public abstract class AbstractDebianMojo extends AbstractMojo{
     @Parameter( defaultValue = "${project.resources}", readonly = true,  required = true )
     private List<Resource> resources;
 
+    public enum Priority {REQUIRED, IMPORTANT, STANDARD, OPTIONAL, EXTRA}
+
+    public enum Architecture {all, any, source}
+
   /**
    * @return the packageName
    */
-  public String getPackageName() {
-    //TODO sanatize package name.
+  protected String packageName() {
     return packageName;
+  }
+
+  protected boolean dpkgAvailable() {
+    return dpkg.exists() && dpkg.canExecute();
+  }
+
+  protected void error(String error) {
+    getLog().error(error);
+  }
+
+  protected void info(String info) {
+    getLog().info(info);
   }
 
   /**
   * @return the buildDirectory
   */
-  public File getBuildDirectory() {
+  public File targetDir() {
     return buildDirectory;
   }
 
   /**
   * @return the baseDir
   */
-  public File getBaseDir() {
+  public File baseDir() {
     return baseDir;
   }
 
   /**
   * @return the version
   */
-  public String getVersion() {
+  public String version() {
     return version;
   }
 
   /**
   * @return the section
   */
-  public String getSection() {
+  public String section() {
     return section;
   }
 
   /**
    * @return the priority
    */
-  public Priority getPriority() {
+  public Priority priority() {
     return priority;
   }
 
   /**
   * @return the mainClass
   */
-  public String getMainClass() {
+  public String mainClass() {
     return mainClass;
   }
 
@@ -164,7 +176,7 @@ public abstract class AbstractDebianMojo extends AbstractMojo{
   /**
    * @return the architecture
    */
-  public Architecture getArchitecture() {
+  public Architecture architecture() {
     return architecture;
   }
 
@@ -185,53 +197,57 @@ public abstract class AbstractDebianMojo extends AbstractMojo{
   /**
   * @return the maintainerName
   */
-  public String getMaintainerName() {
+  public String maintainerName() {
     return maintainerName;
   }
 
   /**
   * @return the maintainerEmail
   */
-  public String getMaintainerEmail() {
+  public String maintainerEmail() {
     return maintainerEmail;
   }
 
   /**
    * @return the longDecription
    */
-  public String getLongDecription() {
+  public String longDescription() {
     return longDecription;
   }
 
   /**
    * @return the shortDecription
    */
-  public String getShortDecription() {
+  public String shortDescription() {
     return shortDecription;
   }
 
   public File getSrcDebianFolder() {
-      return new File(getBaseDir(), "/src/debian");
+      return new File(baseDir(), "/src/debian");
   }
 
   public FList<Artifact> getArtifacts() {
-    return FList.fromCollection(project.getArtifacts());
+    return FList.collection(project.getArtifacts());
   }
 
   public Artifact getArtifact() {
     return project.getArtifact();
   }
 
+  protected void setArtifactFile(File file) {
+    project.getArtifact().setFile(file);
+  }
 
-  public File getTempFolder() {
-    File f = new File(getBuildDirectory(),"/temp");
+
+  public File tempDir() {
+    File f = new File(targetDir(),"/temp");
     if(!f.isDirectory())
       f.mkdirs();
     return f;
   }
 
   public File getUsrFolder() {
-    File f = new File(getTempFolder(),"/debian/usr");
+    File f = new File(tempDir(),"/debian/usr");
     if(!f.isDirectory()) {
       f.mkdirs();
       try {
@@ -257,7 +273,7 @@ public abstract class AbstractDebianMojo extends AbstractMojo{
   }
 
   public File getPackagedLibsFolder() {
-    File f = new File(getLibFolder(),getPackageName());
+    File f = new File(getLibFolder(),packageName());
     if(!f.isDirectory()) {
       f.mkdirs();
       try {
@@ -287,8 +303,12 @@ public abstract class AbstractDebianMojo extends AbstractMojo{
     return buildOutputDir;
   }
 
+  public String artifactName() {
+    return packageName() + "-" + version() + ".deb";
+  }
+
   public File getDebianFolder() {
-    File f = new File(getTempFolder(), "/debian");
+    File f = new File(tempDir(), "/debian");
     if(!f.isDirectory())
       f.mkdirs();
     return f;
@@ -301,11 +321,15 @@ public abstract class AbstractDebianMojo extends AbstractMojo{
     return f;
   }
 
-  public File getControlFile() {
+  public File artifactFile() {
+    return new File(targetDir(), artifactName());
+  }
+
+  public File ctrlFile() {
     return new File(getDEBIANFolder(), "control");
   }
 
-  public File getExecutable() {
-    return new File(getBinFolder(), getPackageName());
+  public File execFile() {
+    return new File(getBinFolder(), packageName());
   }
 }
