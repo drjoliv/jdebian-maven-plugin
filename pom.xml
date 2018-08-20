@@ -30,6 +30,44 @@
     </repository>
   </repositories>
 
+  <dependencyManagement>
+    <dependencies>
+
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-artifact</artifactId>
+      <version>3.3.9</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-component-annotations</artifactId>
+      <version>1.6</version>
+    </dependency>
+
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>18.0</version>
+        <scope>provided</scope>
+      </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>3.1.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-archiver</artifactId>
+      <version>3.6.0</version>
+    </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -76,7 +114,6 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
-      <version>3.1.0</version>
     </dependency>
 
     <!-- Test JARS -->
@@ -99,7 +136,7 @@
       <artifactId>maven-plugin-testing-harness</artifactId>
       <version>3.3.0</version>
       <scope>test</scope>
-    </dependency>
+     </dependency>
 
     <dependency>
       <groupId>com.github.drjoliv</groupId>
@@ -107,18 +144,18 @@
       <version>0.2-SNAPSHOT</version>
     </dependency>
 
-    <dependency>
+    <!--<dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-archiver</artifactId>
       <version>3.2.0</version>
-    </dependency>
+      </dependency>-->
 
   </dependencies>
 
   <build>
       <plugins>
 
-       <plugin>
+        <!--<plugin>
            <groupId>org.apache.maven.plugins</groupId>
            <artifactId>maven-enforcer-plugin</artifactId>
            <version>1.0.1</version>
@@ -136,7 +173,7 @@
                    <phase>validate</phase>
                </execution>
            </executions>
-       </plugin>
+         </plugin>-->
 
        <plugin>
           <artifactId>maven-invoker-plugin</artifactId>
