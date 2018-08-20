@@ -58,7 +58,7 @@ Below is an example of adding jDebian to your pom.xml
 
 ## Creating .deb archive
 
-The below exampls use this [example maven project]().
+The below exampls use this [example maven project](https://github.com/drjoliv/jdebian-maven-plugin/tree/develop/src/example).
 
 * mvn package
 
