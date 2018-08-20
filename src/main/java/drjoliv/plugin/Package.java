@@ -89,12 +89,12 @@ public class Package extends AbstractDebianMojo {
 
     private Try<Unit> createExecutable() {
         return Try.with(() -> {
-          PrintWriter writer = new PrintWriter(new FileWriter(getExecutable()));
+          PrintWriter writer = new PrintWriter(new FileWriter(execFile()));
           writer.println("#!/bin/sh");
           writer.println("exec java -jar " + "/usr/share/" + packageName() + "/" + getProject().getArtifactId()+"-"+getProject().getVersion()+".jar \"$@\"");
           writer.close();
           Set<PosixFilePermission> perms = PosixFilePermissions.fromString("rwxr-xr-x");
-          Files.setPosixFilePermissions(getExecutable().toPath(),perms);
+          Files.setPosixFilePermissions(execFile().toPath(),perms);
           return Unit.unit; 
         }).recoverWith(IOException.class, e -> {
         error(e.getMessage());
@@ -124,7 +124,7 @@ public class Package extends AbstractDebianMojo {
             .exec("dpkg --build debian " + artifactName() , null, tempDir());
           p.waitFor();
           FileUtils.copyFileToDirectory(new File(tempDir(), artifactName()), targetDir());
-          setArtifactFile(artifact());
+          setArtifactFile(artifactFile());
 
         return Unit.unit; 
       }).recoverWith(FileSystemException.class, e -> {
@@ -135,7 +135,7 @@ public class Package extends AbstractDebianMojo {
 
     private Try<Unit> createControlFile() {
         return Try.with(() -> {
-          writeCtrlFile(getControlFile());
+          writeCtrlFile(ctrlFile());
         return Unit.unit; 
       }).recoverWith(IOException.class, e -> {
         info(e.getMessage());
